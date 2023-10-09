@@ -1,6 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import dotenv from "dotenv"; // Import dotenv package
+
+dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 const port = 3000;
@@ -10,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
   try {
-    const response = await axios.get("https://bored-api.appbrewery.com/random");
+    const response = await axios.get(`${process.env.API_BASE_URL}/random`);
     const result = response.data;
 
     res.render("index.ejs", { data: result });
@@ -28,7 +31,7 @@ app.post("/", async (req, res) => {
     const type = req.body.type;
     const participants = req.body.participants;
     const response = await axios.get(
-      `https://bored-api.appbrewery.com/filter?type=${type}&participants=${participants}`
+      `${process.env.API_BASE_URL}/filter?type=${type}&participants=${participants}`
     );
     const result = response.data;
   
